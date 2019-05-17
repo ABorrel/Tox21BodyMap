@@ -14,7 +14,6 @@ class ChemCAS:
 
     def setIC50(self, lassays, lIC50):
 
-
         i = 1
         imax = len(lassays)
         lnotest = []

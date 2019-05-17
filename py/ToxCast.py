@@ -1,4 +1,4 @@
-from re import finditer, escape
+from re import finditer, escape, search
 from os import path
 
 import Assays
@@ -159,11 +159,22 @@ class ToxCast:
 
             if CASID != "ERROR":
                 self.dchem[CASID].setIC50(lassays, lChemIC50)
+            else:
+                self.dchem[CASID].activeAssays = {}
+                self.dchem[CASID].notestAssays = []
+                self.dchem[CASID].inactiveAssays = []
+
+
+
+
 
     def convertIDtoCAS(self, chemID):
 
         if not "dchem" in self.__dict__:
             self.loadChem()
+
+        if search("-", chemID) == True or search("NOCAS", chemID) == True:
+            return chemID
 
         for CASID in self.dchem.keys():
             if self.dchem[CASID].ChemID == chemID:
