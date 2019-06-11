@@ -3,7 +3,7 @@ import pathFolder
 import nextbio
 import mapGeneToBody
 import mapChem
-
+import mapAssays
 
 
 PR_ROOT = "/home/borrela2/BodyMap/"
@@ -27,7 +27,6 @@ TC = ToxCast.ToxCast(PTOXCAST_CHEM, PTOXCAST_AC50, PTOXCAST_ASSAYS, prToxCast)
 # => Assays
 TC.loadAssays()
 
-
 ###########
 # NEXTBio # => download
 ###########
@@ -41,9 +40,25 @@ NB = nextbio.nextbio(PR_NEXTBIO)
 # MAP gene body => nextbio #
 ###########################
 prToxCastVsBody = pathFolder.createFolder(PR_MAPPING + "GeneToxCastVSBody/")
-cGeneToBody = mapGeneToBody.MapGeneToBody(TC, NB, prToxCastVsBody)
-cGeneToBody.map()
-tt
+cGeneToBody = mapGeneToBody.MapGeneToBody(TC, NB, 0, prToxCastVsBody)
+cGeneToBody.mapGene()
+#cGeneToBody.refineMappingWithExp(2)
+#cGeneToBody.refineMappingWithExp(5)
+
+
+
+###########################
+# Mapping assays to body  #
+###########################
+lexcluded = ["NHEERL_HUNTER", "NHEERL_SHAFER", "STEMINA", "TANGUAY"]
+cassays = mapAssays.mapAssays(cGeneToBody, TC, NB, PR_MAPPING)
+cassays.map(5, lexcluded)
+
+
+
+sss
+
+
 
 #############
 #  by Chem  #

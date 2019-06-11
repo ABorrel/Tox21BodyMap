@@ -74,7 +74,7 @@ class nextbio:
                                     dxml[bodysystem][tissu]["expression"] = expression
                                     dxml[bodysystem][tissu]["SD"] = SD
 
-
+        self.xml = dxml
         return dxml
 
 

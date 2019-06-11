@@ -22,3 +22,9 @@ def histExpresion(pfilin):
 
     cmd = "./histExpression.R " + pfilin
     runRCMD(cmd)
+
+
+def histCountGeneAssays(pfilin):
+
+    cmd = "./histCount.R " + pfilin
+    runRCMD(cmd)
