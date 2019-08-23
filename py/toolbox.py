@@ -20,7 +20,7 @@ def selectMinimalEnergyLigPrep(psdfin, psdfout):
         lenergy = []
         for sdfin in lsdf:
             energy = sdfin.split("> <r_lp_Energy>\n")[-1].split("\n")[0]
-            print energy
+            print(energy)
             lenergy.append(float(energy))
 
         # take minimal energy
@@ -63,7 +63,6 @@ def timeFunction(funct, mol):
         return "ERROR"
     else:
         p.join()
-        #print lout
         return lout[0]
 
 
@@ -113,9 +112,9 @@ def loadMatrixToDict(pmatrixIn, sep ="\t"):
         dout[kin] = {}
         j = 0
         if len(lvalues) != len(lheaders):
-            print "Error => nb element"
-            print len(lvalues)
-            print len(lheaders)
+            print ("Error => nb element")
+            print (len(lvalues))
+            print (len(lheaders))
 
         jmax = len(lheaders)
         while j < jmax:
@@ -189,7 +188,7 @@ def writeMatrix(ddesc, pdescAct, sep = "\t"):
 
 
     filout = open(pdescAct, "w")
-    lheader = ddesc[ddesc.keys()[0]].keys()
+    lheader = list(ddesc[list(ddesc.keys())[0]].keys())
 
     # put header in first
 

@@ -1,4 +1,4 @@
-from urllib import urlretrieve
+import requests
 from shutil import copyfile, move
 from os import path
 import xml.etree.ElementTree as ET
@@ -25,18 +25,21 @@ class nextbio:
         pgenexml = self.prXML + gene.replace("/", "-") + ".xml"
         if path.exists(pgenexml):
             return self.parseGeneXML(pgenexml)
-
         else:
-            request = ("https://niehs.ussc.informatics.illumina.com/c/nbapi/bodyatlas.api?apikey=67dfcb212a463142bd17a339927fe3ed&v=0&fmt=xml&q=%s&bodyatlastype=TISSUE&source=1&bodyatlasview=SYSTEM"%(gene))
+            with requests.Session() as s:
+                resp = s.get("https://niehs.ussc.informatics.illumina.com/c/nbapi/bodyatlas.api?apikey=67dfcb212a463142bd17a339927fe3ed&v=0&fmt=xml&q=%s&bodyatlastype=TISSUE&source=1&bodyatlasview=SYSTEM"%(gene))
+                # result = str(resp)
+                resp = str(resp.text)
 
-            presult = urlretrieve(request)
+                fxml = open(pgenexml, "w")
+                fxml.write(resp)
+                fxml.close()
 
             # move file
-            if path.exists(presult[0]):
-                move(presult[0], pgenexml)
+            if path.exists(pgenexml) and path.getsize(pgenexml) > 400:
                 return self.parseGeneXML(pgenexml)
             else:
-                print "Error nextBio result"
+                print ("Error nextBio result")
                 return {}
 
 
@@ -55,7 +58,7 @@ class nextbio:
                             #print element.attrib
                             if element.tag == "bodySystem":
                                 bodysystem = element.text
-                                if not bodysystem in dxml.keys():
+                                if not bodysystem in list(dxml.keys()):
                                     dxml[bodysystem] = {}
                             if element.tag == "concepts":
                                 for concept in element:

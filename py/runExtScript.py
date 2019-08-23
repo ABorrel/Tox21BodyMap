@@ -3,7 +3,7 @@ from os import system, path, remove, chdir, getcwd, listdir
 def runRCMD(cmd, out = 0):
 
     chdir("./../R/")
-    print cmd
+    print(cmd)
     if out == 0:
         system(cmd)
         output = 0
@@ -12,10 +12,6 @@ def runRCMD(cmd, out = 0):
         output = subprocess.check_output(cmd, shell=True)
     chdir("./../py/")
     return output
-
-
-
-
 
 
 def histExpresion(pfilin):

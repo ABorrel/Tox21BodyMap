@@ -29,30 +29,30 @@ class mapAssays:
 
 
         prresult = pathFolder.createFolder(self.prout + "mapAssays_" + str(nfolds) + "/")
-        dGeneTissus = self.cGeneMapped.refineMappingWithExp(nfolds, prresult)
+        dGeneTissus = self.cGeneMapped.refineMappingWithExp(nfolds, prresult, w=0)
 
+
+        for assay in dassays.keys():
+            if dassays[assay]["source"] == "APR" or dassays[assay]["source"] == "LTEA":
+                dassays[assay]["body"].append("Digestive System-Liver")
+            elif dassays[assay]["source"] == "BSK":
+                dassays[assay]["body"].append("Immune System")
+            elif dassays[assay]["source"] == "CEETOX":
+                dassays[assay]["body"].append("Nervous System")
 
         for tissus in dGeneTissus.keys():
             for assay in dGeneTissus[tissus]["assays"].keys():
-                if assay in dassays.keys():
-                    if dassays[assay]["source"] == "APR" or dassays[assay]["source"] == "LTEA":
-                        if tissus == "Digestive System-Liver":
-                            dassays[assay]["body"].append(tissus)
-                    elif dassays[assay]["source"] == "BSK":
-                        if tissus.split("-")[0] == "Immune System":
-                            dassays[assay]["body"].append(tissus)
-                    elif dassays[assay]["source"] == "CEETOX":
-                        if tissus.split("-")[0] == "Nervous System":
-                            dassays[assay]["body"].append(tissus)
-                    else:
+                if assay in list(dassays.keys()):
+                    if not tissus in dassays[assay]["body"]:
                         dassays[assay]["body"].append(tissus)
 
 
-        pfilout = prresult + "AssaysBody.csv"
+        pfilout = prresult + "AssaysBody_" + str(nfolds) + ".csv"
         filout = open(pfilout, "w")
         filout.write("Assays\tSource\tGene\tBody mapped\n")
         for assay in dassays.keys():
-            filout.write("%s\t%s\t%s\t%s\n"%(assay, dassays[assay]["source"], dassays[assay]["gene"], "_".join(dassays[assay]["body"])))
+            if dassays[assay]["body"] != []:
+                filout.write("%s\t%s\t%s\t%s\n"%(assay, dassays[assay]["source"], dassays[assay]["gene"], "_".join(dassays[assay]["body"])))
         filout.close()
 
 

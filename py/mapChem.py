@@ -28,7 +28,7 @@ class mapChem:
                                     for tissus in self.cGeneBody.dgene[gene]["expression"][system].keys():
                                         if not tissus in ltissus:
                                             ltissus.append(tissus)
-                                        if not tissus in dout[CASID].keys():
+                                        if not tissus in list(dout[CASID].keys()):
                                             dout[CASID][tissus] = {}
                                             dout[CASID][tissus]["lAC50"] = []
                                             dout[CASID][tissus]["expression"] = []
@@ -50,8 +50,8 @@ class mapChem:
         for CASID in dout.keys():
             filout.write(CASID)
             for tissus in ltissus:
-                if tissus in dout[CASID].keys():
-                    print dout[CASID][tissus]
+                if tissus in list(dout[CASID].keys()):
+                    print (dout[CASID][tissus])
 
                     filout.write("\t%s\t%s\t%s\t%s"%(" ".join(dout[CASID][tissus]["lAC50"]),
                                                          " ".join(dout[CASID][tissus]["expression"]),
