@@ -38,9 +38,9 @@ NB = nextbio.nextbio(PR_NEXTBIO)
 ###########################
 # MAP gene body => nextbio #
 ###########################
-#prToxCastVsBody = pathFolder.createFolder(PR_MAPPING + "GeneToxCastVSBody/")
-#cGeneToBody = mapGeneToBody.MapGeneToBody(TC, NB, 0, prToxCastVsBody)
-#cGeneToBody.mapGene()
+prToxCastVsBody = pathFolder.createFolder(PR_MAPPING + "GeneToxCastVSBody/")
+cGeneToBody = mapGeneToBody.MapGeneToBody(TC, NB, 0, prToxCastVsBody)
+cGeneToBody.mapGene()
 
 #cGeneToBody.refineMappingWithExp(2, PR_MAPPING)
 #cGeneToBody.refineMappingWithExp(5, PR_MAPPING)
@@ -50,10 +50,11 @@ NB = nextbio.nextbio(PR_NEXTBIO)
 ###########################
 # Mapping assays to body  #
 ###########################
-#lexcluded = ["NHEERL_HUNTER", "NHEERL_SHAFER", "STEMINA", "TANGUAY"]
-#cassays = mapAssays.mapAssays(cGeneToBody, TC, NB, PR_MAPPING)
-#cassays.map(2, lexcluded)
+lexcluded = ["NHEERL_HUNTER", "NHEERL_SHAFER", "STEMINA", "TANGUAY"]
+cassays = mapAssays.mapAssays(cGeneToBody, TC, NB, PR_MAPPING)
+cassays.map(2, lexcluded)
 #cassays.map(5, lexcluded)
+ddd
 
 #############
 #  by Chem  #
