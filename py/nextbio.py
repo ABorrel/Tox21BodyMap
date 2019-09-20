@@ -1,6 +1,6 @@
 import requests
 from shutil import copyfile, move
-from os import path
+from os import path, listdir
 import xml.etree.ElementTree as ET
 
 
@@ -14,10 +14,23 @@ key = "67dfcb212a463142bd17a339927fe3ed"
 
 class nextbio:
     def __init__(self, prout):
-
+        self.prout = prout
         self.prXML = pathFolder.createFolder(prout + "XML/")
 
 
+    def writeListOrgan(self):
+        lfilexml = listdir(self.prXML)
+
+        pfilin = self.prXML + lfilexml[0]
+        # load XML
+        dmap = self.parseGeneXML(pfilin)
+        pfilout = self.prout + "list_organ.txt"
+        filout = open(pfilout, "w")
+        for organ in dmap.keys():
+            filout.write("|--" + organ + "\n")
+            for suborg in dmap[organ].keys():
+                filout.write("    |--" + suborg + "\n")
+        filout.close
 
 
     def runGeneToBodyAtlas(self, gene):

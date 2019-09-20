@@ -20,11 +20,11 @@ PR_MAPPING = PR_ROOT + "MAPPING/"
 ###########
 # TOXCast #
 ###########
-prToxCast = pathFolder.createFolder(PR_MAPPING + "ToxCast/")
-TC = ToxCast.ToxCast([], prToxCast)
+#prToxCast = pathFolder.createFolder(PR_MAPPING + "ToxCast/")
+#TC = ToxCast.ToxCast([], prToxCast)
 
 # => Assays
-TC.loadAssays()
+#TC.loadAssays()
 
 
 ###########
@@ -32,8 +32,8 @@ TC.loadAssays()
 ###########
 PR_NEXTBIO = pathFolder.createFolder(PR_ROOT + "data/NEXTBIO/")
 NB = nextbio.nextbio(PR_NEXTBIO)
-
-
+NB.writeListOrgan()
+eee
 
 ###########################
 # MAP gene body => nextbio #
