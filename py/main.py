@@ -52,12 +52,24 @@ NB = nextbio.nextbio(PR_NEXTBIO)
 if PUSH_DB == 1:
     NB.writeListOrgan() # to write the list of organ considered
     loadInDB.uploadGeneExpInDB(dassays_premap, NB, dorgan, PR_RESULTS, w=1)
-ddd
+
+
+#################
+# Define control based on organ
+#################
+dOrganExp = NB.defineOrganMedExpression(dorgan)
+
 
 #############
 # map assay to organ
 #############
-cmapAssaysToBody = mapAssaysToBody.mapAssaysToBody()
+cmapAssaysToBody = mapAssaysToBody.mapAssaysToBody(NB, dassays_premap, dorgan, PR_RESULTS)
+cmapAssaysToBody.analyseCountAssaysByExp()
+cmapAssaysToBody.analyseCountAssaysByExp(dOrganExp)
+sss
+
+
+
 
 
 ###########
@@ -86,16 +98,3 @@ if PUSH_DB == 1:
 
 
 
-# can be del !!!!
-
-###########################
-# MAP gene body => nextbio #
-###########################
-#prToxCastVsBody = pathFolder.createFolder(PR_RESULTS + "AssaysToxCastVSBody/")
-#cAssayToBody = mapAssaysToBody.MapAssaysToBody(TC, NB, porgan, 0, prToxCastVsBody)
-#cAssayToBody.premapAssays(dassays_premap)
-#cAssayToBody.getGeneExpression(inDB = 1)
-#cGeneToBody.mapGene()
-
-#cGeneToBody.refineMappingWithExp(2, PR_RESULTS)
-#cGeneToBody.refineMappingWithExp(5, PR_RESULTS)

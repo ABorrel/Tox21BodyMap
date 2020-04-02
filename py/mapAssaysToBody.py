@@ -4,83 +4,95 @@ import DBrequest
 
 from os import listdir, path
 from copy import deepcopy
+from re import search
+from numpy import median
+
 
 class mapAssaysToBody:
-    def __init__(self, cNextBio, cAssays, porgan, prout):
+    def __init__(self, cNextBio, dassays, dorgan, prout):
         self.prout = prout
         self.NextBio = cNextBio
-        self.porgan = porgan
-        self.assays = cAssays
+        self.dorgan = dorgan
+        self.dassays = dassays
 
 
-    def refineMappingWithExp(self, nbfold, prout, w=1):
-
-        pranalysis = pathFolder.createFolder(prout + "analysisGene-" + str(nbfold) + "/")
-
-        #if len(listdir(pranalysis)) > 10:
-        #    return
-
-        dtissus = {}
-        for gene in self.dgene.keys():
-            for organ in self.dgene[gene]["expression"].keys():
-                for tissus in self.dgene[gene]["expression"][organ].keys():
-                    kout = organ + "-" + tissus
-                    if not kout in list(dtissus.keys()):
-                        dtissus[kout] = {}
-                        dtissus[kout]["gene"] = {}
-                        dtissus[kout]["assays"] = {}
-
-                    exp = float(self.dgene[gene]["expression"][organ][tissus]["expression"])
-                    control = float(self.dgene[gene]["expression"][organ][tissus]["control"])
-                    if exp > nbfold*control:
-                        dtissus[kout]["gene"][gene] = {}
-                        dtissus[kout]["gene"][gene]["exp"] = [exp, control]
-                        dtissus[kout]["gene"][gene]["assays"] = self.dgene[gene]["Assays"]
-
-                        for assays in self.dgene[gene]["Assays"]:
-                            if not assays in list(dtissus[kout]["assays"].keys()):
-                                dtissus[kout]["assays"][assays] = []
-
-                            # fix here
-                            if not gene in dtissus[kout]["assays"][assays]:
-                                dtissus[kout]["assays"][assays].append(gene)
-
-
-        if w == 1:
-            fcount = open(pranalysis + "count.csv", "w")
-            fcount.write("Organ-tissus\tNgene\tNassay\n")
-
+    def analyseCountAssaysByExp(self, dgeneControl={}):
+        pr_out = pathFolder.createFolder(self.prout + "AssaysByExp/")
+        # define structure
+        dout = {}
+        for system in self.dorgan.keys():
+            for org in self.dorgan[system].keys():
+                organ = self.dorgan[system][org]
+                if not organ in list(dout.keys()):
+                    dout[organ] = {}
+                    dout[organ]["No"] = 0.0
+                    dout[organ][2] = 0.0
+                    dout[organ][5] = 0.0
+                    dout[organ][10] = 0.0
+        
+        for assay in self.dassays.keys():
+            # calibrate a count unique
             dcount = {}
-            for k in dtissus.keys():
-                dcount[k] = {}
-                dcount[k]["gene"] = len(list(dtissus[k]["gene"].keys()))
-                dcount[k]["assays"] = len(list(dtissus[k]["assays"].keys()))
+            if self.dassays[assay]["Type of body mapping"] == "viability":
+                dout["Immune System"]["No"] = dout["Immune System"]["No"] + 1
+                dout["Liver"]["No"] = dout["Liver"]["No"] + 1
+                dout["Lung"]["No"] = dout["Lung"]["No"] + 1
+                dout["Stomach"]["No"] = dout["Stomach"]["No"] + 1
+                continue
+            elif self.dassays[assay]["Type of body mapping"] == "tissue":
+                tissue = self.dassays[assay]["Tissue"].capitalize()
+                #print(tissue)
+                for system in self.dorgan.keys():
+                    if tissue in list(self.dorgan[system].keys()):
+                        dout[self.dorgan[system][tissue]]["No"] = dout[self.dorgan[system][tissue]]["No"] + 1
+                        break
+                continue
 
-                fcount.write("%s\t%s\t%s\n"%(k, dcount[k]["gene"], dcount[k]["assays"]))
+            for organ in dout.keys():
+                dcount[organ] = {2:0, 5:0, 10:0}
+            
+            if self.dassays[assay]["Type of body mapping"] == "gene target":
+                genes = self.dassays[assay]["Gene"]
+                if search("|", genes):
+                    genes = genes.split("|")
+                else:
+                    genes = [genes]
 
-                pfiloutGene = pranalysis + k + "_gene.csv"
-                pfiloutAssays = pranalysis + k + "_assays.csv"
-                filoutGene = open(pfiloutGene, "w")
-                filoutGene.write("Gene\tExp\tcontrol\tAssays\n")
-                filoutAssays = open(pfiloutAssays, "w")
-                filoutAssays.write("Assay\tGenes\tExp\n")
+                for gene in genes:
+                    if gene == "NA":
+                        continue
+                    dgene = self.NextBio.loadGeneToBodyAtlas(gene)
+                    for system in dgene.keys():
+                        for organ in dgene[system].keys():
+                            if dgeneControl != {}:
+                                fold = float(dgene[system][organ]["expression"]) / float(median(dgeneControl[self.dorgan[system][organ]]))
+                            else:
+                                fold = float(dgene[system][organ]["expression"]) / float(dgene[system][organ]["control"])
+                            if fold <= 5 and fold >= 2:
+                                dcount[self.dorgan[system][organ]][2] = 1
+                            elif fold <= 10 and fold > 5:
+                                dcount[self.dorgan[system][organ]][5] = 1
+                            elif fold > 10:
+                                dcount[self.dorgan[system][organ]][10] = 1
 
-                for gene in dtissus[k]["gene"].keys():
-                    filoutGene.write("%s\t%s\t%s\t%s\n"%(gene, dtissus[k]["gene"][gene]["exp"][0], dtissus[k]["gene"][gene]["exp"][1], " ".join(dtissus[k]["gene"][gene]["assays"])))
-
-                for assays in dtissus[k]["assays"].keys():
-                    lgeneAssays = dtissus[k]["assays"][assays]# only take the first gene !!!!!!!!!
-                    geneAssays = lgeneAssays[0]
-                    filoutAssays.write("%s\t%s\t%s\n"%(assays, geneAssays, round(dtissus[k]["gene"][geneAssays]["exp"][0]/dtissus[k]["gene"][geneAssays]["exp"][1],3)))
-                filoutAssays.close()
-
-                filoutGene.close()
-
-            fcount.close()
-
-            runExtScript.histCountGeneAssays(pranalysis + "count.csv")
-        return dtissus
+                for organ in dcount.keys():
+                    if dcount[organ][10] == 1:
+                        dout[organ][10] = dout[organ][10] + 1
+                    elif dcount[organ][5] == 1:
+                        dout[organ][5] = dout[organ][5] + 1
+                    elif dcount[organ][2] == 1:
+                        dout[organ][2] = dout[organ][2] + 1
 
 
-
-
+        if dgeneControl != {}:
+            pfilout = pr_out + "countAssaysByExp_RefOrganExp"
+        else:
+            pfilout = pr_out + "countAssaysByExp"
+        filout = open(pfilout, "w")
+        filout.write("Organ\tFold\tcount\n")
+        for organ in dout.keys():
+            filout.write("%s\tNone\t%s\n"%(organ, dout[organ]["No"]))
+            filout.write("%s\tFold [2,5]\t%s\n"%(organ, dout[organ][2]))
+            filout.write("%s\tFold ]5,10]\t%s\n"%(organ, dout[organ][5]))
+            filout.write("%s\tFold ]10\t%s\n"%(organ, dout[organ][10]))
+        filout.close()

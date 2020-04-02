@@ -20,3 +20,8 @@
     - Update mapping and optimze structure for website
 - 8-29-19: 
     - improve BodyMap maapping
+- 4-1-20:
+    - Clean script
+- 4-2-20:
+    - Analyse assay mapping on organ
+    - Fold analysis by organ

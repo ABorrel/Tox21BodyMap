@@ -3,7 +3,6 @@ library(ggplot2)
 
 
 
-
 ################
 #     MAIN     #
 ################
@@ -26,6 +25,6 @@ p = ggplot(data = dcount, aes(x=Type_mapping, y=count))+
   labs(x="", y="Count")+
   theme(axis.title.y = element_text(size=14),axis.text.x = element_text(angle = 90, hjust = 1, size = 14), axis.text.y = element_text(size = 14))
 
-ggsave(paste(pfilin, ".png", sep = ""),width = 10, height = 10, dpi = 300)
+ggsave(paste(pfilin, ".png", sep = ""),width = 6, height = 6, dpi = 300)
 
 

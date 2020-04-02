@@ -2,6 +2,7 @@ import requests
 from shutil import copyfile, move
 from os import path, listdir
 import xml.etree.ElementTree as ET
+from numpy import median
 
 
 import pathFolder
@@ -105,9 +106,20 @@ class nextbio:
                                             expression = element2.text
                                         elif element2.tag == "standardDeviation":
                                             SD = element2.text
+                                    if control != "0.0": # manage error in the XML with control to 0.0
+                                        CONTROL = control
+                                    #else:
+                                    #    print(pxmlin)
+                                    #    print(tissu)
 
                                     dxml[bodysystem][tissu] = {}
-                                    dxml[bodysystem][tissu]["control"] = control
+                                    if control == "0.0":
+                                        #print(pxmlin, bodysystem, tissu)
+                                        try:dxml[bodysystem][tissu]["control"] = CONTROL
+                                        except:dxml[bodysystem][tissu]["control"] = control
+
+                                    else: 
+                                        dxml[bodysystem][tissu]["control"] = control
                                     dxml[bodysystem][tissu]["expression"] = expression
                                     dxml[bodysystem][tissu]["SD"] = SD
 
@@ -115,10 +127,36 @@ class nextbio:
         return dxml
 
 
+    def defineOrganMedExpression(self, dorgan):
 
+        # list of gene
+        lfilexml = listdir(self.prXML)
 
+        dout = {}
+        for system in dorgan.keys():
+            for tissue in dorgan[system].keys():
+                organ = dorgan[system][tissue]
+                if not organ in dout:
+                    dout[organ] = []
 
+        for fileXML in lfilexml:
+            dgene = self.parseGeneXML(self.prXML + fileXML)
+            for system in dgene.keys():
+                for tissue in dgene[system].keys():
+                    organ = dorgan[system][tissue]
+                    expression = dgene[system][tissue]["expression"]
+                    if expression != 'NA':
+                        dout[organ].append(float(expression))
 
+        pfilout = self.prout + "conrolByOrgan"
+        filout = open(pfilout, "w")
+        filout.write("Organ\tcontrol\n")
+        for organ in dout.keys():
+            filout.write("%s\t%s\n"%(organ, median(dout[organ])))
+        filout.close()
 
+        self.geneControlByOrgan = dout
+
+        return dout
 
 
