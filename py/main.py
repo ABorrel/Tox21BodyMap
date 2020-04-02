@@ -2,8 +2,9 @@ import pathFolder
 import nextbio
 import mapAssaysToBody
 import mapChem
-import mapAssays
 import AssayMapping
+import loadInDB
+import toolbox
 
 
 #=> to import ToxCast librairy
@@ -29,13 +30,35 @@ PUSH_DB = 0
 #############
 # load interest assays
 #############
-cassayMapped = AssayMapping.prepAssay(passaysmapping)
+cassayMapped = AssayMapping.AssayMappping(passaysmapping)
 dassays_premap = cassayMapped.getdassaysClean()
 if PUSH_DB == 1:
     cassayMapped.pushAssayMapInDB("bodymap_assay_mapping_new")
 
 # analyze assays selected
 #cassayMapped.summaryMapping(PR_RESULTS)
+
+####################
+# load organ mapping on system - manual mapping to limit tissues
+####################
+dorgan = toolbox.loadOrgan(porgan)
+
+
+###########
+# NEXTBio # => download
+###########
+PR_NEXTBIO = pathFolder.createFolder(PR_ROOT + "data/NEXTBIO/")
+NB = nextbio.nextbio(PR_NEXTBIO)
+if PUSH_DB == 1:
+    NB.writeListOrgan() # to write the list of organ considered
+    loadInDB.uploadGeneExpInDB(dassays_premap, NB, dorgan, PR_RESULTS, w=1)
+ddd
+
+#############
+# map assay to organ
+#############
+cmapAssaysToBody = mapAssaysToBody.mapAssaysToBody()
+
 
 ###########
 # load ToxCast 
@@ -60,13 +83,6 @@ if PUSH_DB == 1:
     prepChem.prepChemForWebsite(prchem, indb=1)
 
 
-###########
-# NEXTBio # => download
-###########
-PR_NEXTBIO = pathFolder.createFolder(PR_ROOT + "data/NEXTBIO/")
-NB = nextbio.nextbio(PR_NEXTBIO)
-#NB.writeListOrgan()
-
 
 
 
@@ -83,30 +99,3 @@ NB = nextbio.nextbio(PR_NEXTBIO)
 
 #cGeneToBody.refineMappingWithExp(2, PR_RESULTS)
 #cGeneToBody.refineMappingWithExp(5, PR_RESULTS)
-
-
-
-###########################
-# Mapping assays to body  #
-###########################
-lexcluded = ["NHEERL_HUNTER", "NHEERL_SHAFER", "STEMINA", "TANGUAY"]
-cassays = mapAssays.mapAssays(cGeneToBody, TC, NB, PR_RESULTS)
-cassays.map(2, lexcluded)
-#cassays.map(5, lexcluded)
-ddd
-
-
-
-
-
-##################
-# maping Chem on # ==> no really usefull because the mapping can be
-##################
-#prChem = pathFolder.createFolder(PR_RESULTS + "Chem/")
-#cmapChem = mapChem.mapChem(TC, cGeneToBody, prChem)
-#cmapChem.map()
-
-
-
-
-# push

@@ -8,7 +8,13 @@ import pathFolder
 
 
 class nextbio:
-    def __init__(self, prout, pkey=""):
+    def __init__(self, prout, pkey="", server_request=0):
+        """
+        parms:
+        - pkey: file with the key to connect to nextbio db
+        - server_request: 1 load xml from nextbio DB and 0 if not connection, loaded before
+        - prout: path folder output
+        """
         self.prout = prout
         self.prXML = pathFolder.createFolder(prout + "XML/")
 
@@ -18,13 +24,18 @@ class nextbio:
             if path.exists("./../key_nextbio.txt"):
                 pkey = "./../key_nextbio.txt"
         if pkey != "":
-            fkey = open(pkey, "w")
+            fkey = open(pkey, "r")
             key = fkey.read()
             key=key.strip()
             fkey.close()
             self.key=key
+        self.request = server_request
+
 
     def writeListOrgan(self):
+        """
+        Open XML files when it is loaded
+        """
         lfilexml = listdir(self.prXML)
 
         pfilin = self.prXML + lfilexml[0]
@@ -39,12 +50,16 @@ class nextbio:
         filout.close
 
 
-    def runGeneToBodyAtlas(self, gene):
-
+    def loadGeneToBodyAtlas(self, gene):
+        """
+        Load gene by gene
+        """
         pgenexml = self.prXML + gene.replace("/", "-") + ".xml"
         if path.exists(pgenexml):
             return self.parseGeneXML(pgenexml)
         else:
+            if self.request == 0:
+                return {}
             with requests.Session() as s:
                 resp = s.get("https://niehs.ussc.informatics.illumina.com/c/nbapi/bodyatlas.api?apikey=%s&v=0&fmt=xml&q=%s&bodyatlastype=TISSUE&source=1&bodyatlasview=SYSTEM"%(self.key, gene))
                 # result = str(resp)
@@ -58,7 +73,7 @@ class nextbio:
             if path.exists(pgenexml) and path.getsize(pgenexml) > 400:
                 return self.parseGeneXML(pgenexml)
             else:
-                print ("Error nextBio result")
+                print ("Error nextBio server request")
                 return {}
 
 

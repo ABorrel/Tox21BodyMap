@@ -225,3 +225,22 @@ def loadSMILES(psmi):
 
 
 
+def loadOrgan(porgan):
+    """
+    Load organ from file
+    """
+    filin = open(porgan, "r")
+    llines = filin.readlines()
+    filin.close()
+
+    dout = {}
+    for line in llines[1:]:
+        lelement = line.strip().replace("\"", "")
+        lelement = lelement.split(",")
+        system = lelement[0]
+        subsystem = lelement[1]
+        maporgan = lelement[2]
+        if not system in list(dout.keys()):
+            dout[system] = {}
+        dout[system][subsystem] = maporgan
+    return dout

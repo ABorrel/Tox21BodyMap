@@ -4,11 +4,9 @@ import pathFolder
 import runExtScript
 
 
-class prepAssay:
+class AssayMappping:
     def __init__(self, pprepmap):
         self.pprepmap = pprepmap
-        self.cDB = DBrequest.DBrequest()
-        self.cDB.verbose = 0
         self.error = 0
 
 
@@ -33,6 +31,9 @@ class prepAssay:
         return dout
 
     def pushAssayMapInDB(self, nameTable):
+
+        self.cDB = DBrequest.DBrequest()
+        self.cDB.verbose = 0
 
         for assay in self.dprepmap.keys():
             if self.dprepmap[assay]["Type of body mapping"] == "none":
