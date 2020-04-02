@@ -15,12 +15,14 @@ def runRCMD(cmd, out = 0):
 
 
 def histExpresion(pfilin):
-
     cmd = "./histExpression.R " + pfilin
     runRCMD(cmd)
 
 
 def histCountGeneAssays(pfilin):
-
     cmd = "./histCount.R " + pfilin
+    runRCMD(cmd)
+
+def histAssayMapping(pfilin):
+    cmd = "./CountAssaysType.R " + pfilin
     runRCMD(cmd)

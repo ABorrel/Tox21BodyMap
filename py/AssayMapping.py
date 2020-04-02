@@ -1,5 +1,7 @@
 import toolbox
 import DBrequest
+import pathFolder
+import runExtScript
 
 
 class prepAssay:
@@ -7,6 +9,8 @@ class prepAssay:
         self.pprepmap = pprepmap
         self.cDB = DBrequest.DBrequest()
         self.cDB.verbose = 0
+        self.error = 0
+
 
     def loadPreMapAssay(self):
         dprepmap = toolbox.loadMatrixToDict(self.pprepmap, ",")
@@ -17,7 +21,6 @@ class prepAssay:
         
         if not "dprepmap" in self.__dict__:
             self.loadPreMapAssay()
-        print(self.dprepmap)
 
         dout = {}
         for assay in self.dprepmap.keys():
@@ -25,6 +28,8 @@ class prepAssay:
                 continue
             else:
                 dout[assay] = self.dprepmap[assay]
+
+        self.dprepmapclean = dout 
         return dout
 
     def pushAssayMapInDB(self, nameTable):
@@ -66,4 +71,28 @@ class prepAssay:
                     continue
 
                 self.cDB.addElement(nameTable, ["assay", "type_map", "gene"], [assay, "gene", gene])
+    
+    def summaryMapping(self, pr_out):
 
+        if not "dprepmapclean" in self.__dict__:
+            print("ERROR loading mapping")
+            self.error = 1
+            return 1
+
+        # create directory in results
+        pr_out = pathFolder.createFolder(pr_out + "sum_assays/")        
+        pfilout = pr_out + "count_mapping"
+        filout = open(pfilout, "w")
+        filout.write("Assay\tType of organ mapping\n")
+
+        for assay in list(self.dprepmapclean.keys()):
+            if self.dprepmapclean[assay]["Type of body mapping"] == "viability":
+                filout.write("%s\tViability\n"%(assay))
+            elif self.dprepmapclean[assay]["Type of body mapping"] == "gene target":
+                filout.write("%s\tGene target\n"%(assay))
+            elif self.dprepmapclean[assay]["Type of body mapping"] == "tissue":
+                filout.write("%s\tCell type\n"%(assay))
+        filout.close()
+
+        # add R script
+        runExtScript.histAssayMapping(pfilout)

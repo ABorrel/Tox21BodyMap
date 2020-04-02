@@ -1,7 +1,3 @@
-
-
-
-
 class mapChem:
 
     def __init__(self, cTC, cGenBody, prout):

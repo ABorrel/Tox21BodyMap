@@ -7,16 +7,22 @@ import xml.etree.ElementTree as ET
 import pathFolder
 
 
-key = "67dfcb212a463142bd17a339927fe3ed"
-
-"https://niehs.ussc.informatics.illumina.com/c/apiTestbed/testbed.nb"
-
-
 class nextbio:
-    def __init__(self, prout):
+    def __init__(self, prout, pkey=""):
         self.prout = prout
         self.prXML = pathFolder.createFolder(prout + "XML/")
 
+        # load the keys
+        self.key = ""
+        if pkey == "":
+            if path.exists("./../key_nextbio.txt"):
+                pkey = "./../key_nextbio.txt"
+        if pkey != "":
+            fkey = open(pkey, "w")
+            key = fkey.read()
+            key=key.strip()
+            fkey.close()
+            self.key=key
 
     def writeListOrgan(self):
         lfilexml = listdir(self.prXML)
@@ -40,7 +46,7 @@ class nextbio:
             return self.parseGeneXML(pgenexml)
         else:
             with requests.Session() as s:
-                resp = s.get("https://niehs.ussc.informatics.illumina.com/c/nbapi/bodyatlas.api?apikey=67dfcb212a463142bd17a339927fe3ed&v=0&fmt=xml&q=%s&bodyatlastype=TISSUE&source=1&bodyatlasview=SYSTEM"%(gene))
+                resp = s.get("https://niehs.ussc.informatics.illumina.com/c/nbapi/bodyatlas.api?apikey=%s&v=0&fmt=xml&q=%s&bodyatlastype=TISSUE&source=1&bodyatlasview=SYSTEM"%(self.key, gene))
                 # result = str(resp)
                 resp = str(resp.text)
 

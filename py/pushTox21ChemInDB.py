@@ -1,14 +1,15 @@
+# not used anymore
+
 import toolbox
 import DBrequest
 
-PTOX21CHEMSUM = "/home/borrela2/data/invitroDBV3_2019/INVITRODB_V3_1_SUMMARY/Chemical_Summary_190226.csv"
-PTOX21CHEM = "/home/borrela2/BodyMap/data/Tox21_chem.csv"
+
+# have to change that
+#PTOX21CHEMSUM = "/home/borrela2/data/invitroDBV3_2019/INVITRODB_V3_1_SUMMARY/Chemical_Summary_190226.csv"
+#PTOX21CHEM = "/home/borrela2/BodyMap/data/Tox21_chem.csv" # => define when push in DB function
 
 
-
-
-
-def prepChemForWebsite(prout, indb =0):
+def prepChemForWebsite(PTOX21CHEMSUM, PTOX21CHEM, prout, indb =0):
 
     dTox21ChemSum = toolbox.loadMatrixToDict(PTOX21CHEMSUM, sep = ",")
     dTox21Chem = toolbox.loadMatrixToDict(PTOX21CHEM, sep = '\t')
