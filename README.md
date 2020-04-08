@@ -1,6 +1,5 @@
 # BodyMap
-- first commit mapping Tox21 with NB
-- mapping assays to body updated
+Scripts develop to map the Tox21 database on the organ human body.
 
 # Dependencies
 - Python > 3.6
@@ -25,3 +24,6 @@
 - 4-2-20:
     - Analyse assay mapping on organ
     - Fold analysis by organ
+- 4-8-20:
+    - Add data set in the git repertory
+    - change path in the main

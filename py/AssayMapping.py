@@ -97,3 +97,41 @@ class AssayMappping:
 
         # add R script
         runExtScript.histAssayMapping(pfilout)
+    
+    def summaryMappingWithTox21Prop(self, dTox21Loaded, pr_out):
+
+        if not "dprepmapclean" in self.__dict__:
+            print("ERROR loading mapping")
+            self.error = 1
+            return 1
+
+        # create directory in results
+        pr_out = pathFolder.createFolder(pr_out + "sum_assays_withProp/")        
+        pfilout = pr_out + "count_mapping"
+        filout = open(pfilout, "w")
+        filout.write("Assay\tType of organ mapping\tTechnology\tCell types\tTissues\n")
+
+        for assay in list(self.dprepmapclean.keys()):
+
+            techno = dTox21Loaded[assay].charac["detection_technology_type"]
+            tissue = dTox21Loaded[assay].charac["tissue"]
+            cells = dTox21Loaded[assay].charac["cell_short_name"]
+
+            if techno == "NA":
+                techno = "Not defined"
+            if tissue == "NA":
+                tissue = "Not defined"
+            if cells == "NA":
+                cells="Not defined"
+
+            if self.dprepmapclean[assay]["Type of body mapping"] == "viability":
+                type_mapping = "Viability"
+            elif self.dprepmapclean[assay]["Type of body mapping"] == "gene target":
+                type_mapping = "Gene target"
+            elif self.dprepmapclean[assay]["Type of body mapping"] == "tissue":
+                type_mapping = "Tissue"
+            filout.write("%s\t%s\t%s\t%s\t%s\n"%(assay, type_mapping, techno, cells, tissue))
+        filout.close()
+
+        # add R script
+        runExtScript.histAssayMappingWithProp(pfilout)

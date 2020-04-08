@@ -1,0 +1,159 @@
+|--Digestive System
+    |--Ileum mucosa
+    |--Rectum colon
+    |--Sigmoid colon
+    |--Colon mucosa
+    |--Transverse colon
+    |--Ascending colon
+    |--Cecum
+    |--Small intestine
+    |--Liver
+    |--Peritoneum
+    |--Colon
+    |--Stomach fundus
+    |--Parotid gland
+    |--Esophagus
+    |--Colon cecum
+    |--Jejunum
+    |--Stomach cardiac
+    |--Fetal liver
+    |--Stomach pyloric
+    |--Tongue superior part with papillae
+    |--Oral mucosa
+    |--Salivary gland
+    |--Stomach
+    |--Tongue
+    |--Duodenum
+    |--Tongue main corpus
+    |--Appendix
+    |--Pancreas
+|--Endocrine System
+    |--Adrenal gland cortex
+    |--Adrenal gland
+    |--Omental adipose tissue
+    |--Adipose tissue subcutaneous
+    |--Adipose tissue
+    |--Thyroid gland
+    |--Pituitary gland
+    |--Fetal thyroid
+|--Immune System
+    |--Natural killer cell of peripheral blood
+    |--Lymph nodes
+    |--T Lymphocyte (CD8+) of peripheral blood
+    |--Basophil of peripheral blood
+    |--Hematopoietic stem cell of bone marrow
+    |--T Lymphocyte (CD4+) of peripheral blood
+    |--Myeloid cells of peripheral blood
+    |--Dendritic (plasmacytoid) cell
+    |--Microglial cell
+    |--Spleen
+    |--Granulocyte-macrophage progenitor cell of bone marrow
+    |--B lymphocyte (naive) of spleen
+    |--Mononuclear cell of peripheral blood
+    |--Eosinophil of peripheral blood
+    |--Tonsil
+    |--Macrophage of peripheral blood
+    |--T Lymphocyte (regulatory) of peripheral blood
+    |--Bone marrow
+    |--Thymus gland
+    |--B lymphocyte (IgM memory) of spleen
+    |--Whole blood
+    |--Plasma cell of spleen
+    |--Leukocyte (polymorphonuclear) of peripheral blood
+    |--Neutrophil of bone marrow
+    |--Monocyte of peripheral blood
+|--Urogenital System
+    |--Kidney cortex
+    |--Kidney medulla
+    |--Myometrium
+    |--Kidney
+    |--Endometrium
+    |--Vagina
+    |--Urethra
+    |--Cervix
+    |--Placenta
+    |--Penis
+    |--Fallopian tube
+    |--Prostate gland
+    |--Bladder
+    |--Testes
+    |--Vulva
+    |--Ovary
+    |--Uterus
+    |--Testis seminiferous tubule
+|--Nervous System
+    |--Subthalamic nucleus
+    |--Nodose nucleus
+    |--Midbrain
+    |--Medulla
+    |--Medulla oblongata
+    |--Hypothalamus
+    |--Substantia nigra
+    |--Substantia nigra reticulata
+    |--Vestibular nuclei superior
+    |--Globus pallidum external
+    |--Ventral tegmental area
+    |--Substantia nigra pars compacta
+    |--Caudate
+    |--Thalamus lateral nuclei
+    |--Trigeminal ganglia
+    |--Hippocampus
+    |--Spinal cord
+    |--Cerebral cortex
+    |--Putamen
+    |--Thalamus
+    |--Corpus callosum
+    |--Occipital lobe
+    |--Accumbens
+    |--Temporal lobe
+    |--Parietal lobe
+    |--Dorsal root ganglia
+    |--Amygdala
+    |--Frontal lobe
+    |--Frontal cortex
+    |--Globus pallidus
+    |--Pons
+    |--Prefrontal cortex
+    |--Cerebellar vermis
+    |--Cerebellum
+    |--Caudate nucleus
+    |--Cingulate cortex
+    |--Cerebellar hemisphere
+    |--Superior cervical ganglion
+    |--Fetal brain
+    |--Whole brain
+    |--Cerebellum peduncles
+    |--Ciliary ganglion
+|--Exocrine System
+    |--Breast tissue
+    |--Mammary gland
+    |--Nipple cross-section
+|--Integumentary System
+    |--Skin
+|--Cardiovascular System
+    |--Aorta
+    |--Heart ventricle
+    |--Pericardium
+    |--Coronary artery
+    |--Heart atrium
+    |--Heart
+    |--Atrioventricular node
+    |--Saphenous vein
+    |--Vena cava
+|--Olfactory System
+    |--Olfactory bulb
+|--Respiratory System
+    |--Bronchus
+    |--Trachea
+    |--Pharyngeal mucosa
+    |--Lung
+    |--Fetal lung
+|--Musculoskeletal System
+    |--Synovial membrane
+    |--Joint synovium
+    |--Skeletal muscle
+    |--Skeletal muscle psoas
+    |--Extraocular muscle
+    |--Smooth muscle
+|--Visual System
+    |--Conjunctiva

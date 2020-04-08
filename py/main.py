@@ -17,7 +17,7 @@ import ToxCast
 # param 
 ########
 #PR_ROOT = "/home/borrela2/BodyMap/"
-PR_ROOT = "C:/Users/Aborrel/research/NIEHS/BodyMap/"
+PR_ROOT = "./../" # have to be change
 PR_RESULTS = PR_ROOT + "RESULTS/"
 
 # expert driven mapping
@@ -36,7 +36,7 @@ if PUSH_DB == 1:
     cassayMapped.pushAssayMapInDB("bodymap_assay_mapping_new")
 
 # analyze assays selected
-#cassayMapped.summaryMapping(PR_RESULTS)
+cassayMapped.summaryMapping(PR_RESULTS)
 
 ####################
 # load organ mapping on system - manual mapping to limit tissues
@@ -66,7 +66,6 @@ dOrganExp = NB.defineOrganMedExpression(dorgan)
 cmapAssaysToBody = mapAssaysToBody.mapAssaysToBody(NB, dassays_premap, dorgan, PR_RESULTS)
 cmapAssaysToBody.analyseCountAssaysByExp()
 cmapAssaysToBody.analyseCountAssaysByExp(dOrganExp)
-sss
 
 
 
@@ -79,20 +78,24 @@ sss
 prToxCast = pathFolder.createFolder(PR_RESULTS + "ToxCast_prep/")
 TC = ToxCast.ToxCast([], prToxCast)
 
-# => Assays
-TC.loadAssays(list(dassays_premap.keys()))
+# => Assays loading
+dassays_loaded = TC.loadAssays(list(dassays_premap.keys()))
 
-# => assays in DB
-TC.loadChem()
-TC.loadAC50()
+# => analysis assays by prop
+cassayMapped.summaryMappingWithTox21Prop(dassays_loaded, PR_RESULTS)
+
+
+
+# => assays in DB with chem and AC50
 if PUSH_DB == 1:
+    TC.loadChem()
+    TC.loadAC50()
     uploadAC50InDB(TC, "bodymap_assay_ac50") # change the table name
 
-# => chem in DB
-# create chemical table for website => not to use
-if PUSH_DB == 1:
+    # create file for check
     prchem = pathFolder.createFolder(PR_RESULTS + "chemForDB/")
     prepChem.prepChemForWebsite(prchem, indb=1)
+    
 
 
 

@@ -26,3 +26,7 @@ def histCountGeneAssays(pfilin):
 def histAssayMapping(pfilin):
     cmd = "./CountAssaysType.R " + pfilin
     runRCMD(cmd)
+
+def histAssayMappingWithProp(pfilin):
+    cmd = "./CountAssaysType_prop.R " + pfilin
+    runRCMD(cmd)
