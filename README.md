@@ -5,6 +5,7 @@ Scripts develop to map the Tox21 database on the organ human body.
 - Python > 3.6
 - R
 - Netbio DB access (https://www.nextbio.com/b/authentication/login.nb)
+- Toxcast lib that can be found in https://github.com/ABorrel/ToxCast_lib (change main line 13)
 
 # To do list
 - Add data in the github repertory 
